@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form</title>
+
+    <style>
+        body {
+            background-color: rgb(103, 103, 103);
+        }
+
+        #main {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            width: 400px;
+            margin: auto;
+            background: linear-gradient(0deg, rgb(34, 192, 195) 0%, rgb(253, 187, 45) 100%);
+            border-radius: 25px;
+            align-items: center;
+            justify-content: center;
+            top: 5vh;
+
+        }
+
+        #h2 {
+            padding: 20px;
+            font-size: 30px;
+            text-align: center;
+        }
+
+        input {
+            display: block;
+            margin: 15px auto;
+            width: 200px;
+            padding: 10px;
+            border-radius: 30px;
+            background-color: rgba(0, 0, 0, 0.085);
+            /* background: linear-gradient(rgba(255, 0, 0, 0.17), rgba(0, 170, 255, 0.193)); */
+        }
+
+        #submit {
+            margin-bottom: 25px;
+            width: 100px;
+        }
+
+        #alert {
+            color: red;
+            display: block;
+            position: relative;
+            top: -12px;
+            left: 1rem;
+            margin: auto;
+            width: 200px;
+
+        }
+
+        #alert2 {
+            color: red;
+            display: block;
+            position: relative;
+            margin: auto;
+            width: 200px;
+            height: 15px;
+            top: -20px;
+            left: 12%;
+
+        }
+
+        .pass {
+            position: relative;
+            display: block;
+            margin: 2px;
+            left: 23px;
+            color: rgb(148, 147, 147);
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="main">
+        <form action="#" id="form" method="post" onsubmit="return validate()">
+            <h2 id="h2">Registration Form</h2>
+            <input type="text" placeholder="Write Your Name" id="name">
+            <input type="email" placeholder="Write Your Email" id="email">
+            <input type="password" placeholder="Enter Your Password" id="pass" onkeyup="checkConditions(this.value)">
+            <input type="password" placeholder="Confirm Password" id="pass2" onkeyup="checkMatch(this)">
+            <label class="pass">1 Number Character</label>
+            <label class="pass">1 Capital Alphabet Character</label>
+            <label class="pass">1 Small Alphabet Character</label>
+            <label class="pass">1 Special Character</label>
+            <label class="pass">12 Character</label>
+            <input type="submit" value="submit" id="submit">
+            <error id="alert" class="alert"></error>
+            <!-- <error id="alert2" class="alert"></error> -->
+        </form>
+
+        <script>
+            var pass = document.getElementById('pass');
+            var pass2 = document.getElementById('pass2');
+            var alert = document.getElementById('alert');
+            var alert2 = document.getElementById('alert2');
+            var passLabels = document.getElementsByClassName('pass');
+            var flag = 1;
+
+            function checkConditions(data) {
+                const conditions = [
+                    { regex: /(?=.*[0-9])/, index: 0 },
+                    { regex: /(?=.*[A-Z])/, index: 1 },
+                    { regex: /(?=.*[a-z])/, index: 2 },
+                    { regex: /(?=.*[!@#$%^&*])/, index: 3 },
+                    { regex: /(?=.{12,})/, index: 4 }
+                ];
+
+                conditions.forEach(condition => {
+                    passLabels[condition.index].style.color = condition.regex.test(data) ? 'green' : 'rgb(148, 147, 147)';
+                });
+            }
+
+            function checkMatch(elem) {
+                if (elem.value.length > 0) {
+                    if (elem.value != pass.value) {
+                        alert.innerText = "Password Does Not Match";
+                        flag = 0;
+                    } else {
+                        alert.innerText = '';
+                        flag = 1;
+                    }
+                } else {
+                    alert.innerText = 'Please Enter Confirm Password';
+                    flag = 0;
+                }
+            }
+
+            function validate() {
+                return flag === 1;
+            }
+
+            window.addEventListener('keyup', caps => {
+                var isCaps = caps.getModifierState('CapsLock');
+                alert2.innerText = isCaps ? 'CapsLock is Enabled' : '';
+            });
+        </script>
+    </div>
+</body>
+
+</html>
